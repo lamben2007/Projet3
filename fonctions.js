@@ -1,8 +1,10 @@
 
 
+/**
+ * Ajout d'une card projet
+ * @param {object} work - Objet work de l'API
+ */
 function addCardWork(work) {
-
-  // console.log(work);
 
   // Sélectionner le composant "gallery"
   const sectionGallery = document.querySelector(".gallery");
@@ -35,6 +37,9 @@ function addCardWork(work) {
 }
 
 
+/**
+ * Affiche la liste des projets
+ */
 export async function displayCardWorks() {
 
   try {
@@ -55,6 +60,10 @@ export async function displayCardWorks() {
       addCardWork(work);
     }
 
+    // Appliquer le filtre
+    const filterCategoryId = Number(window.localStorage.getItem("filterCategoryId"));
+    appliquerFiltre(filterCategoryId);
+
   }
 
   // Gestion des erreurs
@@ -66,31 +75,35 @@ export async function displayCardWorks() {
 }
 
 
+/**
+ * Indique le filtre en cours de sélection
+ * @param {number} categoryId - Identifiant de la catégorie
+ */
 function selectionButtonFilter(categoryId) {
 
   // Sélectionner tous les boutons filtre
   let buttonsFilterElement = document.querySelectorAll('.boutonFiltre');
 
-  //
+  // Pour chaque bouton
   for (let button of buttonsFilterElement) {
 
-    //
+    // Identifiant de la catégorie contenu dans le bouton
     const id = Number(button.dataset.id);
 
-    //
+    // Supprimer la sélection du filtre
     button.classList.remove("boutonFiltreActive");
 
-    //
+    // SI c'est le bouton filtre recherché ALORS le sélectionner
     if (categoryId === id) button.classList.add("boutonFiltreActive");
 
   }
 
-  // //
-  // const filterCategoryId = Number(window.localStorage.getItem("filterCategoryId"));
-
 }
 
-// ----------------------------------------------------------------------------
+
+/**
+ * Affiche la barre des filtres catégories
+ */
 export async function menuFiltres() {
 
   try {
@@ -128,7 +141,7 @@ export async function menuFiltres() {
       // Ajouter la classe CSS
       boutonFiltreElement.classList.add("boutonFiltre");
 
-      //
+      // Sélectionner le bouton filtre selon la catégorie
       if (category.id === filterCategoryId) boutonFiltreElement.classList.add("boutonFiltreActive");
 
       // Définir le texte du bouton
@@ -139,19 +152,19 @@ export async function menuFiltres() {
 
       // Créer une fonction d'évènement "click" pour le bouton
       boutonFiltreElement.addEventListener("click", function (event) {
-        //
+
+        // Identifiant de la catégorie contenu dans le bouton
         const id = Number(event.target.dataset.id);
-        //
+
+        // Stocker l'ID de la catégorie dans le localStorage
         window.localStorage.setItem("filterCategoryId", id);
 
-        //
+        // Sélectionner le bouton filtre en fonction de la catégorie
         selectionButtonFilter(id);
 
-        //
+        // Appliquer le filtre en fonction de l'identifiant catégorie
         appliquerFiltre(id)
 
-        //
-        // listeTravaux();
       });
 
     }
@@ -167,35 +180,30 @@ export async function menuFiltres() {
 }
 
 
-
 /**
- * 
- * @param {filterCategoryId} filterCategoryId 
+ * Appliquer le filtre (liste de projets) en fonction de la catégorie
+ * @param {filterCategoryId} filterCategoryId - Identifiant de la catégorie
  */
 export function appliquerFiltre(filterCategoryId) {
 
-  //
+  // Sélectionner toutes les cards
   let cards = document.querySelectorAll('.gallery figure');
 
-  //
+  // POUR chaque card
   for (let card of cards) {
 
-    //
+    // Récupérer l'identifiant catégorie de la card
     const cardCategoryId = Number(card.dataset.categoryId);
 
-    //
+    // SI la card en cours fait partie de la catégorie ou si catégorie "TOUS" ALORS
     if (cardCategoryId === filterCategoryId || filterCategoryId === 0)
-      //
+      // Afficher la card
       card.style.display = 'block';
 
-    else // 
-      //
+    else // SINON
+      // Cacher la card
       card.style.display = 'none';
 
   }
 
 }
-
-
-
-
