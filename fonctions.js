@@ -207,3 +207,58 @@ export function appliquerFiltre(filterCategoryId) {
   }
 
 }
+
+
+function initModal() {
+
+  // Récupération des éléments
+  const modal = document.getElementById("myModal");
+  const closeModalBtn = document.querySelector(".close-btn");
+  const changeButton = document.querySelector("#changeButton");
+
+  // Masquer la modale lors du clic sur le bouton de fermeture
+  closeModalBtn.onclick = function () {
+    modal.style.display = "none";
+  }
+
+  // Ouvrir la modale lors du clic sur le bouton de modification
+  changeButton.addEventListener("click", () => {
+    //
+    modal.style.display = "block";
+  })
+
+  // Masquer la modale en cliquant en dehors du contenu
+  window.onclick = function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+
+}
+
+//
+function editionMode() {
+
+  //
+  const token = window.localStorage.getItem("token");
+
+  //
+  if (token !== null) {
+    console.log("mode edition");
+
+    //
+    const changeButton = document.querySelector("#changeButton");
+    changeButton.style.display = "flex";
+
+    //
+    const barEditionMode = document.querySelector("#editionMode");
+    barEditionMode.style.display = "flex";
+  }
+}
+
+//
+initModal();
+
+//
+editionMode();
+

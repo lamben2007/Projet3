@@ -150,7 +150,7 @@ header {
 	margin: 50px 0
 }
 
-header a{
+header a {
 	text-decoration: none;
 }
 
@@ -230,7 +230,7 @@ li a:hover {
 
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	/* margin-bottom: 1em; */
 }
 
 .gallery {
@@ -389,4 +389,123 @@ footer nav ul {
 footer {
 	background-color: white;
 	margin-top: 371px;
+}
+
+
+/* --- MODALE ------- */
+
+
+/* Style pour la modale */
+.modal {
+	display: none;
+	/* Masquée par défaut */
+	position: fixed;
+	z-index: 1;
+	/* Au-dessus du contenu de la page */
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	/* Fond semi-transparent */
+}
+
+/* Contenu de la modale */
+.modal-content {
+	background-color: #fff;
+	margin: 3% auto;
+	padding: 20px;
+	border-radius: 8px;
+	width: 80%;
+	max-width: 630px;
+	text-align: center;
+}
+
+
+.modal-content h2 {
+	color: black;
+	font-size: 26px;
+	font-weight: 400;
+	font-family: 'work sans';
+	line-height: 30px;
+	margin: 50px 0 50px 0;
+}
+
+.modal-content hr {
+	margin: 70px 0 50px 0;
+}
+
+
+/* Bouton de fermeture */
+.close-btn {
+	color: black;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.close-btn:hover {
+	color: #000;
+}
+
+#photosGallery {
+	height: 500px;
+	background: lightgray;
+}
+
+.photoAddButton {
+	margin: 0 10px;
+	height: 38px;
+	padding: 9px 20px;
+	font-size: 14px;
+	cursor: pointer;
+	font-weight: 700;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	background-color: #1D6154;
+	color: white;
+	font-family: 'Syne';
+}
+
+.photoAddButton:hover {
+	background-color: white;
+	color: #1D6154;
+}
+
+
+/* ------------------------- */
+
+#changeButton {
+	display: none;
+	/* display: flex; */
+	align-items: center;
+	padding: 0 0 0 30px;
+	border: none;
+	background: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+#changeButtonIcon {
+	font-size: 16px;
+	color: black;
+	margin-left: 30px;
+}
+
+#divTitleButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#editionMode {
+	height: 59px;
+	background: black;
+	color: white;
+	text-align: center;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px;
 }

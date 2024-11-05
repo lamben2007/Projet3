@@ -34,8 +34,7 @@ async function connect(email, password) {
 
         // Récupérer le token et le mettre dans le localStorage
         const data = await response.json(); // Récupère les données JSON de la réponse
-        console.log(data); // Affiche les données dans la console
-        window.localStorage.setItem("token",data.token);
+        window.localStorage.setItem("token", data.token);
 
         // Renvoyer le status (200 = réussite)
         return response.status;
@@ -88,10 +87,13 @@ function initEvent() {
 
         switch (response) {
 
-            // Cas : Connexion réussi
+            // Cas : Connexion réussi // !!! PB message d'erreur de violation de données google
             case 200:
                 errorMessage.textContent = "Connexion Ok";
                 errorMessage.style.display = 'block';
+                window.location.href = "index.html";
+                // window.location.assign("index.html");
+
                 break;
 
             // Cas : Utilisateur inconnu
