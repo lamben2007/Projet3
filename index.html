@@ -45,11 +45,16 @@
 			<div id="myModal" class="modal">
 
 				<div class="modal-content">
-					
+
+					<div id="buttonsBar">
+						<span class="previous-btn">
+							<i class="fas fa-arrow-left"></i>
+						</span>
+						<span class="close-btn">&times;</span>
+					</div>
+
 					<!-- Formulaire Gallerie photos-->
 					<div id="photosGalleryModal">
-
-						<span class="close-btn">&times;</span>
 
 						<h2>Galerie photos</h2>
 
@@ -63,6 +68,38 @@
 
 					<!-- Formulaire ajout photo-->
 					<div id="addPhotoModal">
+
+						<h2>Ajout photo</h2>
+
+						<div id="divOnlyPhoto">
+							<img src="./assets/images/abajour-tahina.png" alt="photo" />
+						</div>
+
+
+						<div id="divAddPhoto">
+
+							<i class="fas fa-image iconImg"></i>
+							<button id="btnAddPhoto">+ Ajouter photo</button>
+							<span>jpg, png : 4mo max</span>
+
+						</div>
+
+						<form action="#" method="post">
+
+							<label for="title">Titre</label>
+							<input type="text" name="title" id="title">
+
+							<label for="category">Catégorie</label>
+							<select id="optCategory" name="options">
+								<option value="option1"></option>
+								<option value="option2">Option 2</option>
+								<option value="option3">Option 3</option>
+							</select>
+
+							<hr>
+
+							<input type="submit" value="Valider">
+						</form>
 
 					</div>
 

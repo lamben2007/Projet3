@@ -84,6 +84,20 @@ function initModal() {
     const modal = document.getElementById("myModal");
     const closeModalBtn = document.querySelector(".close-btn");
     const changeButton = document.querySelector("#changeButton");
+    const photoAddButton = document.querySelector(".photoAddButton");
+    const photosGalleryModal = document.querySelector("#photosGalleryModal");
+    const addPhotoModal = document.querySelector("#addPhotoModal");
+    const previousbtn = document.querySelector(".previous-btn");
+
+
+    //
+    previousbtn.onclick = function () {
+          //
+          photosGalleryModal.style.display = "block";
+
+          //
+          addPhotoModal.style.display = "none";
+    }
 
     // Masquer la modale lors du clic sur le bouton de fermeture
     closeModalBtn.onclick = function () {
@@ -94,6 +108,17 @@ function initModal() {
     changeButton.addEventListener("click", () => {
         //
         modal.style.display = "block";
+    })
+
+    // Ouvrir la modale "Ajout photo" lors du clic sur le bouton "Ajouter photo"
+    photoAddButton.addEventListener("click", () => {
+
+        //
+        photosGalleryModal.style.display = "none";
+
+        //
+        addPhotoModal.style.display = "block";
+
     })
 
     // Masquer la modale en cliquant en dehors du contenu
