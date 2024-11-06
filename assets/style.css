@@ -392,7 +392,7 @@ footer {
 }
 
 
-/* --- MODALE ------- */
+/* --- MODALE -------------------------------------------------------------------- */
 
 
 /* Style pour la modale */
@@ -452,7 +452,45 @@ footer {
 #photosGallery {
 	height: 500px;
 	background: lightgray;
+
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
 }
+
+
+#photosGallery figure {
+	position: relative;
+	display: inline-block;
+}
+
+#photosGallery img {
+	width: 100%;
+}
+
+
+#photosGallery .delete-button {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color:black;
+	border: none;
+	color: white;
+	font-size: 16px;
+	padding: 5px;
+	border-radius: 15%;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#photosGallery .delete-button:hover {
+	background-color: gray
+}
+
 
 .photoAddButton {
 	margin: 0 10px;
@@ -474,7 +512,10 @@ footer {
 }
 
 
-/* ------------------------- */
+
+
+
+/* ------------------------------------------------------------------------------------- */
 
 #changeButton {
 	display: none;

@@ -62,7 +62,7 @@ export async function displayCardWorks() {
 
     // Appliquer le filtre
     const filterCategoryId = Number(window.localStorage.getItem("filterCategoryId"));
-    appliquerFiltre(filterCategoryId);
+    applyFilter(filterCategoryId);
 
   }
 
@@ -163,7 +163,7 @@ export async function menuFiltres() {
         selectionButtonFilter(id);
 
         // Appliquer le filtre en fonction de l'identifiant catégorie
-        appliquerFiltre(id)
+        applyFilter(id)
 
       });
 
@@ -184,7 +184,7 @@ export async function menuFiltres() {
  * Appliquer le filtre (liste de projets) en fonction de la catégorie
  * @param {filterCategoryId} filterCategoryId - Identifiant de la catégorie
  */
-export function appliquerFiltre(filterCategoryId) {
+export function applyFilter(filterCategoryId) {
 
   // Sélectionner toutes les cards
   let cards = document.querySelectorAll('.gallery figure');
@@ -209,56 +209,28 @@ export function appliquerFiltre(filterCategoryId) {
 }
 
 
-function initModal() {
-
-  // Récupération des éléments
-  const modal = document.getElementById("myModal");
-  const closeModalBtn = document.querySelector(".close-btn");
-  const changeButton = document.querySelector("#changeButton");
-
-  // Masquer la modale lors du clic sur le bouton de fermeture
-  closeModalBtn.onclick = function () {
-    modal.style.display = "none";
-  }
-
-  // Ouvrir la modale lors du clic sur le bouton de modification
-  changeButton.addEventListener("click", () => {
-    //
-    modal.style.display = "block";
-  })
-
-  // Masquer la modale en cliquant en dehors du contenu
-  window.onclick = function (event) {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  }
-
-}
-
-//
+/**
+ * Permet de passer en mode édition
+ */
 function editionMode() {
 
-  //
+  // Récupération du token
   const token = window.localStorage.getItem("token");
 
-  //
+  // SI token trouvé ALORS
   if (token !== null) {
-    console.log("mode edition");
 
-    //
+    // Afficher le bouton "Modifier"
     const changeButton = document.querySelector("#changeButton");
     changeButton.style.display = "flex";
 
-    //
+    // Afficher la barre noire EDITION
     const barEditionMode = document.querySelector("#editionMode");
     barEditionMode.style.display = "flex";
   }
+
 }
 
-//
-initModal();
 
-//
+// Gestion du mode EDITION
 editionMode();
-

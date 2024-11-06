@@ -14,6 +14,8 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script type="module" src="main.js"></script>
+	<script type="module" src="modale.js"></script>
+	<script type="module" src="fonctions.js"></script>
 </head>
 
 <body>
@@ -41,19 +43,31 @@
 
 			<!-- Structure de la modale -->
 			<div id="myModal" class="modal">
-				<div class="modal-content">
-					<span class="close-btn">&times;</span>
-					<h2>Galerie photos</h2>
 
-					<div id="photosGallery">
+				<div class="modal-content">
+					
+					<!-- Formulaire Gallerie photos-->
+					<div id="photosGalleryModal">
+
+						<span class="close-btn">&times;</span>
+
+						<h2>Galerie photos</h2>
+
+						<div id="photosGallery"></div>
+
+						<hr>
+
+						<button class="photoAddButton">Ajouter une photo</button>
 
 					</div>
 
-					<hr>
+					<!-- Formulaire ajout photo-->
+					<div id="addPhotoModal">
 
-					<button class="photoAddButton">Ajouter une photo</button>
+					</div>
 
 				</div>
+
 			</div>
 
 		</aside>
