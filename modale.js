@@ -1,41 +1,11 @@
-/**
- * Affiche la liste de CARD des travaux dans le modale
- */
-export async function displayCardsWorksModal() {
+import { deleteCardWork } from "./fonctions.js";
 
-    try {
-
-        // Récupération des données des travaux de l'architecte via l'API
-        const response = await fetch("http://localhost:5678/api/works");
-
-        // Renvoyer une erreur si réponse non Ok
-        if (!response.ok) {
-            throw new Error(response.status + " Une erreur s'est produite")
-        }
-
-        // Conversion en json
-        const works = await response.json();
-
-        // Créer les card works
-        for (let work of works) {
-            addCardWorkModal(work);
-        }
-
-    }
-
-    // Gestion des erreurs
-    catch (err) {
-        // Afficher message d'erreur
-        alert(err);
-    }
-
-}
 
 /**
  * Ajout d'une card work
  * @param {object} work - Objet work de l'API 
  */
-function addCardWorkModal(work) {
+export function addCardWorkModal(work) {
 
     // Sélectionner le composant "gallery"
     const photosGallery = document.querySelector("#photosGallery");
@@ -65,8 +35,28 @@ function addCardWorkModal(work) {
     // Action au clic du bouton suppression
     deleteButton.addEventListener('click', () => {
 
-        const id = figureElement.getAttribute('id');
-        alert("suppression card ID : " + id);
+        //
+        const id = Number(figureElement.getAttribute('id'));
+
+        // Récupération du token
+        const token = window.localStorage.getItem("token");
+
+        //
+        const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet élément ?");
+    
+        //
+        if (confirmation) {
+            //
+            deleteCardWork(id, token);
+            // L'utilisateur a confirmé, on exécute l'action
+            console.log("L'élément a été supprimé.");
+        } else {
+            // L'utilisateur a annulé
+            alert("Suppression annulée.");
+        }
+
+
+
     });
 
 
@@ -74,6 +64,27 @@ function addCardWorkModal(work) {
     photosGallery.appendChild(figureElement);
 
 }
+
+export function deleteCardWorkModalDOM(id) {
+
+    //
+    let cards = document.querySelectorAll('#photosGallery figure');
+
+    // POUR chaque card
+    for (let card of cards) {
+
+        // Récupérer l'identifiant de la card work
+        const idCard = Number(card.id);
+
+        // SI la card en cours est la card à supprimer
+        if (idCard === id) {
+            // Suppression de la card work
+            card.remove();
+        }
+
+    }
+}
+
 
 /**
  * Initialisation du modale (Ajout des évènements)
@@ -92,11 +103,11 @@ function initModal() {
 
     //
     previousbtn.onclick = function () {
-          //
-          photosGalleryModal.style.display = "block";
+        //
+        photosGalleryModal.style.display = "block";
 
-          //
-          addPhotoModal.style.display = "none";
+        //
+        addPhotoModal.style.display = "none";
     }
 
     // Masquer la modale lors du clic sur le bouton de fermeture
@@ -132,6 +143,3 @@ function initModal() {
 
 // Initialisation du modale
 initModal();
-
-// Afficher la liste des cards Work dans le modal
-displayCardsWorksModal();

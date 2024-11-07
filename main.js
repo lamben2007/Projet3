@@ -1,4 +1,7 @@
-import { displayCardWorks, menuFiltres } from "./fonctions.js";
+import { displayCardWorks, menuFiltres, editionMode } from "./fonctions.js";
+
+// Edition mode
+editionMode();
 
 // Afficher la liste des projets
 await displayCardWorks();

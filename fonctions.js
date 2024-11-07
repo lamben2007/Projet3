@@ -1,4 +1,4 @@
-
+import { addCardWorkModal, deleteCardWorkModalDOM } from "./modale.js"
 
 /**
  * Ajout d'une card projet
@@ -57,6 +57,7 @@ export async function displayCardWorks() {
 
     // Créer les card works
     for (let work of works) {
+      addCardWorkModal(work);
       addCardWork(work);
     }
 
@@ -118,6 +119,8 @@ export async function menuFiltres() {
 
     // Conversion en json
     let categories = await response.json();
+
+    // Sélecteur
 
     // Ajouter la catégorie "Tous"
     const categorieTous = { "id": 0, "name": "Tous" }
@@ -212,25 +215,162 @@ export function applyFilter(filterCategoryId) {
 /**
  * Permet de passer en mode édition
  */
-function editionMode() {
+export function editionMode() {
 
   // Récupération du token
   const token = window.localStorage.getItem("token");
 
-  // SI token trouvé ALORS
+  const changeButton = document.querySelector("#changeButton");
+  const barEditionMode = document.querySelector("#editionMode");
+
+  // SI token trouvé (Mode édition) ALORS
   if (token !== null) {
 
     // Afficher le bouton "Modifier"
-    const changeButton = document.querySelector("#changeButton");
     changeButton.style.display = "flex";
 
     // Afficher la barre noire EDITION
-    const barEditionMode = document.querySelector("#editionMode");
     barEditionMode.style.display = "flex";
+  }
+
+  // SINON si token non trouvé (Mode standard)
+  else {
+    // Cacher le bouton "Modifier"
+    changeButton.style.display = "none";
+
+    // Cacher la barre noire EDITION
+    barEditionMode.style.display = "none";
+
   }
 
 }
 
 
-// Gestion du mode EDITION
-editionMode();
+function deleteCardWorkDOM(ID) {
+
+  //
+  let cards = document.querySelectorAll('.gallery figure');
+
+  // POUR chaque card
+  for (let card of cards) {
+
+    // Récupérer l'identifiant de la card work
+    const idCard = Number(card.id);
+
+    // SI la card en cours est la card à supprimer
+    if (idCard === ID) {
+      // Suppression de la card work
+      card.remove();
+    }
+
+  }
+
+}
+
+export async function deleteCardWork(id, token) {
+
+  try {
+
+    //
+    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`, // En-tête avec token
+        'Content-Type': 'application/json' // En-tête JSON si besoin
+      }
+    });
+
+    //
+    if (!response.ok) {
+      throw new Error(`Erreur : ${response.status} ${response.statusText}`);
+    }
+
+    // Suppression du projet dans les 2 listes des galleries (Liste principale + liste modale)
+    deleteCardWorkDOM(id);
+    deleteCardWorkModalDOM(id);
+
+  }
+
+  // Gestion des erreurs
+  catch (error) {
+
+    //
+    console.error('Erreur lors de la requête DELETE:', error);
+  }
+}
+
+
+function loginLogoutManagement() {
+
+  //
+  const loginLogoutElement = document.querySelector("#loginLogout");
+
+  //
+  const token = window.localStorage.getItem("token");
+
+  // SI pas de token ALORS
+  if (!token) {
+    //
+    window.location.href = "login.html";
+  }
+
+  else {
+    //
+    window.localStorage.removeItem("token");
+
+    //
+    editionMode();
+  }
+
+  //
+  statusLoginLogout();
+
+
+
+
+}
+
+function statusLoginLogout() {
+
+  //
+  const loginLogoutElement = document.querySelector("#loginLogout");
+  //
+  const token = window.localStorage.getItem("token");
+
+  // SI pas de token ALORS
+  if (!token) {
+    //
+    loginLogoutElement.innerText = 'login';
+  }
+
+  else {
+    loginLogoutElement.innerText = 'logout';
+  }
+
+
+}
+
+//
+function createEvents() {
+
+  //
+  const loginLogoutElement = document.querySelector("#loginLogout");
+
+  //
+  loginLogoutElement.addEventListener("click", (e) => {
+
+    //
+    e.preventDefault
+
+    //
+    loginLogoutManagement();
+
+  })
+
+}
+
+createEvents();
+
+// loginLogoutManagement();
+
+statusLoginLogout();
