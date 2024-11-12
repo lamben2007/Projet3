@@ -120,8 +120,6 @@ export async function menuFiltres() {
     // Conversion en json
     let categories = await response.json();
 
-    // Sélecteur
-
     // Ajouter la catégorie "Tous"
     const categorieTous = { "id": 0, "name": "Tous" }
     categories.unshift(categorieTous);
@@ -172,6 +170,8 @@ export async function menuFiltres() {
 
     }
 
+    // Définit les catégories dans le formulaire du modale "ajout photo"
+    defineCategoriesModal(categories);
 
   }
   // Gestion des erreurs
@@ -182,6 +182,35 @@ export async function menuFiltres() {
 
 }
 
+/**
+ * Définit les catégories dans le formulaire du modale "ajout photo"
+ * @param {*} categories - Tableau d'objets contenant les catégories
+ */
+function defineCategoriesModal(categories) {
+
+  //
+  const selectElement = document.querySelector("#addPhotoForm #optCategory");
+
+  //
+  for (let category of categories) {
+
+    //
+    if (category.name !== "Tous") {
+      //
+      let optionElement = document.createElement("option");
+      //
+      optionElement.value = category.id; // Définit la valeur de l'option
+
+      //
+      optionElement.textContent = category.name; // Définit le texte affiché
+
+      //
+      selectElement.appendChild(optionElement);
+
+    }
+
+  }
+}
 
 /**
  * Appliquer le filtre (liste de projets) en fonction de la catégorie
@@ -267,7 +296,67 @@ function deleteCardWorkDOM(ID) {
 
 }
 
-export async function deleteCardWork(id, token) {
+
+export async function addWork() {
+
+  //
+  try {
+
+    // Récupération du token
+    const token = window.localStorage.getItem("token");
+
+    // Utilise FormData pour récupérer les données du formulaire
+    const form = document.getElementById('addPhotoForm');
+    const formData = new FormData(form);
+
+    // Ajouter un nouveau work via l'API
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: 'POST', // Méthode d'envoi (POST)
+      headers: {
+        'Authorization': `Bearer ${token}`, // Ajoute le token d'autorisation dans les headers
+      },
+      body: formData, // Corps de la requête, ici les données du formulaire
+    });
+
+    // Renvoyer une erreur si réponse non Ok
+    if (!response.ok) {
+      let error = new Error("Une erreur s'est produite");
+      error.status = response.status;
+      throw error;
+    }
+
+    // Si la réponse est correcte, récupère les données en JSON
+    const work = await response.json();
+
+    // Ajouter une card work dans la liste des galleries (en tenant compte du filtre actif)
+    addCardWork(work);
+    const filterCategoryId = Number(window.localStorage.getItem("filterCategoryId"));
+    applyFilter(filterCategoryId);
+
+    // Ajouter une card work dans la liste des galleries du modal
+    addCardWorkModal(work);
+
+    //
+    alert("Ajout effectué avec succès !");
+
+    // Renvoyer le status (201 = réussite)
+    return response.status;
+
+  }
+
+  // Gestion des erreurs
+  catch (error) {
+
+    //
+    console.log("addWork: ", error)
+
+    // Renvoyer le status de la réponse
+    return error.status
+
+  }
+}
+
+export async function deleteWork(id, token) {
 
   try {
 
@@ -308,13 +397,15 @@ function loginLogoutManagement() {
   //
   const token = window.localStorage.getItem("token");
 
-  // SI pas de token ALORS
+  // SI pas de token ( actuellement pas logué ) ALORS
   if (!token) {
     //
     window.location.href = "login.html";
   }
 
-  else {
+  // SINON (si présence token = actuellement logué)
+  else
+   {
     //
     window.localStorage.removeItem("token");
 
@@ -325,12 +416,9 @@ function loginLogoutManagement() {
   //
   statusLoginLogout();
 
-
-
-
 }
 
-function statusLoginLogout() {
+export function statusLoginLogout() {
 
   //
   const loginLogoutElement = document.querySelector("#loginLogout");
@@ -346,7 +434,6 @@ function statusLoginLogout() {
   else {
     loginLogoutElement.innerText = 'logout';
   }
-
 
 }
 
@@ -373,4 +460,4 @@ createEvents();
 
 // loginLogoutManagement();
 
-statusLoginLogout();
+// statusLoginLogout();

@@ -443,8 +443,6 @@ footer {
 	cursor: pointer;
 }
 
-
-
 .modal-content h2 {
 	color: black;
 	font-size: 26px;
@@ -458,13 +456,6 @@ footer {
 	margin: 70px 0 0px 0;
 }
 
-
-/* #photosGalleryModal {
-	display: none;
-} */
-
-
-
 #photosGallery {
 	height: 500px;
 	background: lightgray;
@@ -476,7 +467,6 @@ footer {
 	grid-row-gap: 20px;
 }
 
-
 #photosGallery figure {
 	position: relative;
 	display: inline-block;
@@ -485,7 +475,6 @@ footer {
 #photosGallery img {
 	width: 100%;
 }
-
 
 #photosGallery .delete-button {
 	position: absolute;
@@ -560,6 +549,14 @@ footer {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+#addPhotoModal input:disabled {
+	background-color: #cccccc;
+	color: #666666;
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+
 #addPhotoModal #divAddPhoto {
 	background-color: #E8F1F6;
 	width: 420px;
@@ -567,22 +564,11 @@ footer {
 	margin: auto;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-	gap: 7px;
+	gap: 10px;
 }
 
-
-#addPhotoModal #divOnlyPhoto{
-	background-color: #E8F1F6;
-	width: 420px;
-	height: 169px;
-	margin: auto;
-	display: none;
-}
-
-#addPhotoModal #divOnlyPhoto img{
-	height: 169px;
-}
 
 #addPhotoModal #divAddPhoto span {
 	font-size: 10px;
@@ -590,9 +576,14 @@ footer {
 	color: #444444;
 }
 
-#btnAddPhoto {
+#addPhotoModal #divAddPhoto img {
+	height: 100%;
+	display: none;
+}
+
+#addPhotoModal #divAddPhoto label {
+	margin: 0px;
 	margin: 0 10px;
-	height: 38px;
 	padding: 10px 20px;
 	font-size: 14px;
 	cursor: pointer;
@@ -602,13 +593,23 @@ footer {
 	background-color: #CBD6DC;
 	color: #306685;
 	font-family: 'Syne';
-	width: 173px;
+	width: 133px;
+}
+
+/* Effet au survol */
+#addPhotoModal #divAddPhoto label:hover {
+	background-color: #bbb;     /* Légèrement plus foncé au survol */
 }
 
 #addPhotoModal .iconImg {
 	font-size: 76px;
 	color: #B9C5CC;
 }
+
+#imageFile{
+	display: none;
+}
+
 
 /* ------------------------------------------------------------------------------------- */
 

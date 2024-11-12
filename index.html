@@ -71,34 +71,29 @@
 
 						<h2>Ajout photo</h2>
 
-						<!-- <div id="divOnlyPhoto">
-							<img src="./assets/images/abajour-tahina.png" alt="photo" />
-						</div> -->
+						<form id="addPhotoForm" action="#" method="post">
+							
+							<div id="divAddPhoto">
+								<i class="fas fa-image iconImg"></i>
+								<label for="imageFile" class="btnAddPhotoNew">+ Ajouter photo</label>
+								<input type="file" id="imageFile" name="image" accept="image/*" required>
+								<span>jpg, png : 4mo max</span>
+								<img src="" alt="Prévisualisation de l'image…" />
+							</div>
 
 
-						<div id="divAddPhoto">
-
-							<i class="fas fa-image iconImg"></i>
-							<button id="btnAddPhoto">+ Ajouter photo</button>
-							<span>jpg, png : 4mo max</span>
-
-						</div>
-
-						<form action="#" method="post">
 
 							<label for="title">Titre</label>
 							<input type="text" name="title" id="title">
 
 							<label for="category">Catégorie</label>
-							<select id="optCategory" name="options">
-								<option value="option1"></option>
-								<option value="option2">Option 2</option>
-								<option value="option3">Option 3</option>
+							<select id="optCategory" name="category">
+								<option value=""></option>
 							</select>
 
 							<hr>
 
-							<input type="submit" value="Valider">
+							<input id="submitAddPhotoModal" type="submit" value="Valider" disabled>
 						</form>
 
 					</div>
@@ -139,6 +134,7 @@
 			<div class="boutonsFiltre"></div>
 
 			<div class="gallery"></div>
+			
 		</section>
 
 		<section id="contact">

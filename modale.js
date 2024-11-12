@@ -1,4 +1,4 @@
-import { deleteCardWork } from "./fonctions.js";
+import { deleteWork, addWork } from "./fonctions.js";
 
 
 /**
@@ -43,11 +43,11 @@ export function addCardWorkModal(work) {
 
         //
         const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet élément ?");
-    
+
         //
         if (confirmation) {
             //
-            deleteCardWork(id, token);
+            deleteWork(id, token);
             // L'utilisateur a confirmé, on exécute l'action
             console.log("L'élément a été supprimé.");
         } else {
@@ -64,6 +64,7 @@ export function addCardWorkModal(work) {
     photosGallery.appendChild(figureElement);
 
 }
+
 
 export function deleteCardWorkModalDOM(id) {
 
@@ -99,7 +100,7 @@ function initModal() {
     const photosGalleryModal = document.querySelector("#photosGalleryModal");
     const addPhotoModal = document.querySelector("#addPhotoModal");
     const previousbtn = document.querySelector(".previous-btn");
-
+    const submitAddPhotoModal = document.querySelector("#submitAddPhotoModal");
 
     //
     previousbtn.onclick = function () {
@@ -139,7 +140,256 @@ function initModal() {
         }
     }
 
+    // Validation du formulaire lors du clic sur le bouton "Ajout photo"
+    submitAddPhotoModal.addEventListener("click", async (e) => {
+
+        //
+        e.preventDefault();
+
+        // Validation du formulaire
+        validateAddPhotoForm();
+
+        // Ajouter le work
+        const status = await addWork();
+
+        // Reset formulaire
+        if (status === 201) resetForm();
+
+    })
+
+    //
+    document.getElementById("title").addEventListener("change", function () {
+        console.log("Contenu du champ title : " + this.value);
+        validateAddPhotoForm();
+    });
+
+    //
+    document.getElementById("optCategory").addEventListener("change", function () {
+        console.log("Contenu du champ optCategory : " + this.value);
+        validateAddPhotoForm();
+    });
+
+    //
+    document.getElementById("imageFile").addEventListener("change", function () {
+
+        //
+        // console.log("Contenu du champ imageFile : " + this.value);
+        validateAddPhotoForm();
+
+        //
+        // alert("ok");
+        previewFile();
+    });
+
 }
+
+
+function validateAddPhotoForm() {
+
+    //
+    const form = document.getElementById('addPhotoForm');
+
+    // Utilise FormData pour récupérer les données du formulaire
+    const formData = new FormData(form);
+
+    // Vérifier le champ fichier image
+    let errorImageFile = validateImageFile(formData);
+
+    // Vérifier le titre
+    let errorTitle = validateTitle(formData);
+
+    // Vérifier la catégorie
+    let errorCategorie = validateCategorie(formData);
+
+    //
+    if (errorImageFile === false && errorTitle === false && errorCategorie === false) {
+
+        console.log("Formulaire valide");
+
+        // Activer le bouton "VALIDER"
+        document.getElementById("submitAddPhotoModal").disabled = false;
+
+        //
+        // const status = addWork(formData);
+        // console.log("status", status);
+
+
+    }
+
+    else {
+        // Désactiver le bouton "VALIDER"
+        document.getElementById("submitAddPhotoModal").disabled = true;
+
+    }
+}
+
+/**
+ * Vérifie si le champ "title" est défini dans formData.
+ * Affiche une alerte si le champ est vide et retourne un booléen indiquant la présence d'une erreur.
+ * 
+ * @param {FormData} formData - Les données du formulaire contenant le champ "title".
+ * @returns {boolean} - true si le champ "title" est vide, sinon false.
+ */
+function validateTitle(formData) {
+
+    // Récupère la valeur du champ "title" dans formData
+    const title = formData.get("title");
+
+    // Vérifie si le champ est vide
+    if (!title) {
+        // alert("Titre non défini"); // Alerte si le champ est vide
+        return true;               // Retourne true pour indiquer une erreur
+    }
+
+    // Retourne false si aucune erreur n'est détectée
+    return false;
+}
+
+
+function validateCategorie(formData) {
+
+    // Récupère la valeur du champ "category" dans formData
+    const categoryId = formData.get("category");
+
+    // Vérifie si le champ est vide
+    if (!categoryId) {
+        // alert("Catégorie non défini"); // Alerte si le champ est vide
+        return true;               // Retourne true pour indiquer une erreur
+    }
+
+    // Retourne false si aucune erreur n'est détectée
+    return false;
+}
+
+
+/**
+ * Fonction pour vérifier la validité d'un fichier image soumis via un formulaire.
+ * @param {FormData} formData - Objet FormData contenant les données du formulaire.
+ * @returns {boolean} - Retourne true si le fichier est invalide, false sinon.
+ */
+function validateImageFile(formData) {
+
+    // Pas d'erreur par défaut
+    let errorImageFile = false;
+
+    // Récupération des données du champ fichier image
+    const imageUrl = formData.get("image");
+
+    // Vérifier si le fichier est présent
+    if (!imageUrl || imageUrl.name.trim() === "") {
+        // alert("Fichier image non défini");
+        return true;  // Retourner immédiatement pour éviter d'autres vérifications inutiles
+    }
+
+    // Vérifier la taille du fichier (maximum 4 Mo)
+    const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
+    if (imageUrl.size > maxSize) {
+        alert("Taille du fichier image incorrecte (doit être < 4 Mo)");
+        return true;  // Retour immédiat en cas d'erreur
+    }
+
+    // Vérifier l'extension du fichier
+    const validExtensions = ["jpg", "jpeg", "png"];
+    const fileExtension = imageUrl.name.split('.').pop().toLowerCase();
+    if (!validExtensions.includes(fileExtension)) {
+        alert("Extension de fichier image incorrecte (seules les extensions jpg, jpeg, et png sont autorisées)");
+        return true;  // Retour immédiat en cas d'erreur
+    }
+
+    // Retourne false si aucune erreur n'a été détectée
+    return errorImageFile;
+}
+
+
+//
+// async function sendWork(formData) {
+
+//    //
+//     try {
+
+//         // Récupération du token
+//         const token = window.localStorage.getItem("token");
+
+//         // Récupération des données des catégories via l'API
+//         const response = await fetch("http://localhost:5678/api/works", {
+//             method: 'POST', // Méthode d'envoi (POST)
+//             headers: {
+//                 'Authorization': `Bearer ${token}`, // Ajoute le token d'autorisation dans les headers
+//             },
+//             body: formData, // Corps de la requête, ici les données du formulaire
+//         });
+
+//         // Renvoyer une erreur si réponse non Ok
+//         if (!response.ok) {
+//             let error = new Error("Une erreur s'est produite");
+//             error.status = response.status;
+//             throw error;
+//         }
+
+//         // Si la réponse est correcte, récupère les données en JSON
+//         const data = await response.json();
+//         console.log('Réponse de l\'API:', data);
+
+//         // Renvoyer le status (200 = réussite)
+//         return response.status;
+
+//     }
+
+//     // Gestion des erreurs
+//     catch (error) {
+
+//         //
+//         console.log("sendWork: ", error)
+
+//         // Renvoyer le status de la réponse
+//         return error.status
+
+//     }
+// }
 
 // Initialisation du modale
 initModal();
+
+
+//
+function previewFile() {
+
+    //
+    const preview = document.querySelector("#divAddPhoto img");
+    const file = document.querySelector("#imageFile").files[0];
+    const reader = new FileReader();
+
+    //
+    reader.addEventListener(
+        "load",
+        () => {
+            // on convertit l'image en une chaîne de caractères base64
+            preview.src = reader.result;
+
+            // Afficher uniquement que l'aperçu de l'image
+            document.querySelector("#divAddPhoto i").style.display = "none";
+            document.querySelector("#divAddPhoto label").style.display = "none";
+            document.querySelector("#divAddPhoto span").style.display = "none";
+            document.querySelector("#divAddPhoto img").style.display = "block";
+        },
+        false,
+    );
+
+    //
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+
+//
+function resetForm() {
+
+    //
+    document.querySelector("#addPhotoForm").reset();
+
+    // Afficher uniquement que l'aperçu de l'image
+    document.querySelector("#divAddPhoto i").style.display = "block";
+    document.querySelector("#divAddPhoto label").style.display = "block";
+    document.querySelector("#divAddPhoto span").style.display = "block";
+    document.querySelector("#divAddPhoto img").style.display = "none";
+}
