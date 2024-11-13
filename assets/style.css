@@ -239,11 +239,13 @@ li a:hover {
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
+	justify-items: center;
 }
 
 .gallery img {
-	width: 100%;
-
+	width: 305px;  /* largeur fixe */
+    height: 407px; /* hauteur fixe */
+    object-fit: cover; 
 }
 
 #contact {
@@ -456,15 +458,18 @@ footer {
 	margin: 70px 0 0px 0;
 }
 
-#photosGallery {
-	height: 500px;
-	background: lightgray;
 
-	width: 100%;
+.modal-content #photosGalleryModal{
+	padding: 0 70px 0 70px;
+}
+
+#photosGallery {
+	width: 90%;
+	margin: 0 25px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+	grid-column-gap: 0px;
+	grid-row-gap: 30px;
 }
 
 #photosGallery figure {
@@ -473,13 +478,15 @@ footer {
 }
 
 #photosGallery img {
-	width: 100%;
+	width: 77px;  /* largeur fixe */
+    height: 103px; /* hauteur fixe */
+    object-fit: cover; 
 }
 
 #photosGallery .delete-button {
 	position: absolute;
 	top: 5px;
-	right: 5px;
+	right: 11px;
 	background-color: black;
 	border: none;
 	color: white;
@@ -498,7 +505,7 @@ footer {
 
 
 .photoAddButton {
-	margin: 0 10px;
+	margin: 38px 0 19px 0;
 	height: 38px;
 	padding: 9px 20px;
 	font-size: 14px;

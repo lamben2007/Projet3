@@ -66,6 +66,10 @@ export function addCardWorkModal(work) {
 }
 
 
+/**
+ * Supprime le projet contenu dans liste du modal
+ * @param {Number} id - Identifiant du projet à supprimer dans le modal
+ */
 export function deleteCardWorkModalDOM(id) {
 
     //
@@ -184,9 +188,12 @@ function initModal() {
 }
 
 
+/**
+ * Effectue une validation du formulaire "Ajout photo" du modale
+ */
 function validateAddPhotoForm() {
 
-    //
+    // Sélection élément form
     const form = document.getElementById('addPhotoForm');
 
     // Utilise FormData pour récupérer les données du formulaire
@@ -201,21 +208,18 @@ function validateAddPhotoForm() {
     // Vérifier la catégorie
     let errorCategorie = validateCategorie(formData);
 
-    //
+    // SI aucune erreur trouvé dans le formulaire ALORS
     if (errorImageFile === false && errorTitle === false && errorCategorie === false) {
 
+        //
         console.log("Formulaire valide");
 
         // Activer le bouton "VALIDER"
         document.getElementById("submitAddPhotoModal").disabled = false;
 
-        //
-        // const status = addWork(formData);
-        // console.log("status", status);
-
-
     }
 
+    // SINON (si erreur(s) trouvée(s))
     else {
         // Désactiver le bouton "VALIDER"
         document.getElementById("submitAddPhotoModal").disabled = true;
@@ -223,9 +227,9 @@ function validateAddPhotoForm() {
     }
 }
 
+
 /**
  * Vérifie si le champ "title" est défini dans formData.
- * Affiche une alerte si le champ est vide et retourne un booléen indiquant la présence d'une erreur.
  * 
  * @param {FormData} formData - Les données du formulaire contenant le champ "title".
  * @returns {boolean} - true si le champ "title" est vide, sinon false.
@@ -246,6 +250,11 @@ function validateTitle(formData) {
 }
 
 
+/**
+ *  Vérifie si le champ "catégorie" est défini
+ * @param {FormData} formData 
+ * @returns {boolean} - true si le champ "categorie" est vide, sinon false.
+ */
 function validateCategorie(formData) {
 
     // Récupère la valeur du champ "category" dans formData
@@ -301,65 +310,19 @@ function validateImageFile(formData) {
 }
 
 
-//
-// async function sendWork(formData) {
-
-//    //
-//     try {
-
-//         // Récupération du token
-//         const token = window.localStorage.getItem("token");
-
-//         // Récupération des données des catégories via l'API
-//         const response = await fetch("http://localhost:5678/api/works", {
-//             method: 'POST', // Méthode d'envoi (POST)
-//             headers: {
-//                 'Authorization': `Bearer ${token}`, // Ajoute le token d'autorisation dans les headers
-//             },
-//             body: formData, // Corps de la requête, ici les données du formulaire
-//         });
-
-//         // Renvoyer une erreur si réponse non Ok
-//         if (!response.ok) {
-//             let error = new Error("Une erreur s'est produite");
-//             error.status = response.status;
-//             throw error;
-//         }
-
-//         // Si la réponse est correcte, récupère les données en JSON
-//         const data = await response.json();
-//         console.log('Réponse de l\'API:', data);
-
-//         // Renvoyer le status (200 = réussite)
-//         return response.status;
-
-//     }
-
-//     // Gestion des erreurs
-//     catch (error) {
-
-//         //
-//         console.log("sendWork: ", error)
-
-//         // Renvoyer le status de la réponse
-//         return error.status
-
-//     }
-// }
-
-// Initialisation du modale
-initModal();
-
-
-//
+/**
+ * Effectue l'aperçu de l'image en fonction du fichier sélectionné
+ */
 function previewFile() {
 
-    //
+    // Sélection élément du DOM
     const preview = document.querySelector("#divAddPhoto img");
     const file = document.querySelector("#imageFile").files[0];
+
+    // Créer de l'objet FileReader
     const reader = new FileReader();
 
-    //
+    // Créer l'évènement permettant l'affichage de l'image seule après sélection du fichier
     reader.addEventListener(
         "load",
         () => {
@@ -375,16 +338,19 @@ function previewFile() {
         false,
     );
 
-    //
+    // Lecture des données du fichier image chargé
     if (file) {
         reader.readAsDataURL(file);
     }
 }
 
-//
+
+/**
+ * Effectue une réinitialisation du formulaire
+ */
 function resetForm() {
 
-    //
+    // Lancer le reset sur le formulaire
     document.querySelector("#addPhotoForm").reset();
 
     // Afficher uniquement que l'aperçu de l'image
@@ -393,3 +359,7 @@ function resetForm() {
     document.querySelector("#divAddPhoto span").style.display = "block";
     document.querySelector("#divAddPhoto img").style.display = "none";
 }
+
+
+// Initialisation du modale
+initModal();

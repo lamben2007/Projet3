@@ -38,7 +38,7 @@ function addCardWork(work) {
 
 
 /**
- * Affiche la liste des projets
+ * Affiche la liste des projets sous forme de card
  */
 export async function displayCardWorks() {
 
@@ -182,6 +182,7 @@ export async function menuFiltres() {
 
 }
 
+
 /**
  * Définit les catégories dans le formulaire du modale "ajout photo"
  * @param {*} categories - Tableau d'objets contenant les catégories
@@ -211,6 +212,7 @@ function defineCategoriesModal(categories) {
 
   }
 }
+
 
 /**
  * Appliquer le filtre (liste de projets) en fonction de la catégorie
@@ -275,6 +277,10 @@ export function editionMode() {
 }
 
 
+/**
+ * Supprime un projet dans la liste des galleries
+ * @param {Number} ID - Identifiant du projet
+ */
 function deleteCardWorkDOM(ID) {
 
   //
@@ -297,6 +303,10 @@ function deleteCardWorkDOM(ID) {
 }
 
 
+/**
+ * Ajoute un nouveau projet
+ * @returns Renvoi le status envoyé par l'API (201 = réussi)
+ */
 export async function addWork() {
 
   //
@@ -336,7 +346,7 @@ export async function addWork() {
     // Ajouter une card work dans la liste des galleries du modal
     addCardWorkModal(work);
 
-    //
+    // Message "Ajout effectué avec succès !"
     alert("Ajout effectué avec succès !");
 
     // Renvoyer le status (201 = réussite)
@@ -356,6 +366,12 @@ export async function addWork() {
   }
 }
 
+
+/**
+ * Supprime un projet
+ * @param {Number} id - Identifiant du projet
+ * @param {*} token - token permettant la suppression du projet via l'API
+ */
 export async function deleteWork(id, token) {
 
   try {
@@ -389,6 +405,9 @@ export async function deleteWork(id, token) {
 }
 
 
+/**
+ * Gère la connexion / déconnexion administrateur
+ */
 function loginLogoutManagement() {
 
   //
@@ -413,11 +432,15 @@ function loginLogoutManagement() {
     editionMode();
   }
 
-  //
+  // Gère le bouton login / logout
   statusLoginLogout();
 
 }
 
+
+/**
+ * Gère le bouton login/logout 
+ */
 export function statusLoginLogout() {
 
   //
@@ -437,7 +460,10 @@ export function statusLoginLogout() {
 
 }
 
-//
+
+/**
+ * Crée les évènements des diverses éléments du DOM
+ */
 function createEvents() {
 
   //
@@ -456,8 +482,6 @@ function createEvents() {
 
 }
 
+
+// Crée les évènements des diverses éléments du DOM
 createEvents();
-
-// loginLogoutManagement();
-
-// statusLoginLogout();

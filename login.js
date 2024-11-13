@@ -1,4 +1,7 @@
 
+
+
+
 /**
  * Effectue une connexion de l'utilisateur
  * @param {string} email - Email de l'utilisateur
@@ -113,6 +116,7 @@ function initEvent() {
     })
 
 }
+
 
 // Configuration des évènements
 initEvent();

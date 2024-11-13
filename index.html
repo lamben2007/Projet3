@@ -30,7 +30,7 @@
 		<nav>
 			<ul>
 				<li><a href="index.html">projets</a></li>
-				<li>contact</li>
+				<li><a href="#contact">contact</a></li>
 				<li><a id="loginLogout">login</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
@@ -72,23 +72,21 @@
 						<h2>Ajout photo</h2>
 
 						<form id="addPhotoForm" action="#" method="post">
-							
+
 							<div id="divAddPhoto">
 								<i class="fas fa-image iconImg"></i>
 								<label for="imageFile" class="btnAddPhotoNew">+ Ajouter photo</label>
 								<input type="file" id="imageFile" name="image" accept="image/*" required>
 								<span>jpg, png : 4mo max</span>
-								<img src="" alt="Prévisualisation de l'image…" />
+								<img src="#" alt="Preview">
 							</div>
-
-
 
 							<label for="title">Titre</label>
 							<input type="text" name="title" id="title">
 
-							<label for="category">Catégorie</label>
+							<label for="optCategory">Catégorie</label>
 							<select id="optCategory" name="category">
-								<option value=""></option>
+								<option value="">-</option>
 							</select>
 
 							<hr>
@@ -107,11 +105,12 @@
 
 		<section id="introduction">
 			<figure>
-				<img src="./assets/images/sophie-bluel.png" alt="">
+				<img src="./assets/images/sophie-bluel.png" alt="sophie-bluel">
 			</figure>
 			<article>
 				<h2>Designer d'espace</h2>
-				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
+				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la
+					livraison
 					finale du chantier.</p>
 				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les
 					couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du
@@ -134,7 +133,7 @@
 			<div class="boutonsFiltre"></div>
 
 			<div class="gallery"></div>
-			
+
 		</section>
 
 		<section id="contact">
