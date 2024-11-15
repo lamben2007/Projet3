@@ -90,13 +90,11 @@ function initEvent() {
 
         switch (response) {
 
-            // Cas : Connexion réussi // !!! PB message d'erreur de violation de données google
+            // Cas : Connexion réussi
             case 200:
-                errorMessage.textContent = "Connexion Ok";
-                errorMessage.style.display = 'block';
+                // errorMessage.textContent = "Connexion Ok";
+                // errorMessage.style.display = 'block';
                 window.location.href = "index.html";
-                // window.location.assign("index.html");
-
                 break;
 
             // Cas : Utilisateur inconnu

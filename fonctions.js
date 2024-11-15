@@ -38,7 +38,7 @@ function addCardWork(work) {
 
 
 /**
- * Affiche la liste des projets sous forme de card
+ * Affiche la liste des projets sous forme de cards
  */
 export async function displayCardWorks() {
 
@@ -55,13 +55,15 @@ export async function displayCardWorks() {
     // Conversion en json
     const works = await response.json();
 
-    // Créer les card works
+    // Créer les card work
     for (let work of works) {
+      // Ajout d'1 card côté modale
       addCardWorkModal(work);
+      // Ajout d'1 card côté gallerie
       addCardWork(work);
     }
 
-    // Appliquer le filtre
+    // Appliquer le filtre actif
     const filterCategoryId = Number(window.localStorage.getItem("filterCategoryId"));
     applyFilter(filterCategoryId);
 
@@ -220,6 +222,14 @@ function defineCategoriesModal(categories) {
  */
 export function applyFilter(filterCategoryId) {
 
+  // Forcer le filtre sur "Tous" SI mode edition
+  const token = window.localStorage.getItem("token");
+  if (token) {
+    //
+    filterCategoryId = 0;
+    console.log("forcer le filtre à tous car mode edition")
+  }
+
   // Sélectionner toutes les cards
   let cards = document.querySelectorAll('.gallery figure');
 
@@ -244,15 +254,17 @@ export function applyFilter(filterCategoryId) {
 
 
 /**
- * Permet de passer en mode édition
+ * Gestion du mode édition / mode standard 
  */
 export function editionMode() {
 
   // Récupération du token
   const token = window.localStorage.getItem("token");
 
+  // Sélection du bouton "Modifier" et de la barre édition
   const changeButton = document.querySelector("#changeButton");
   const barEditionMode = document.querySelector("#editionMode");
+  const barBoutonsFiltres = document.querySelector(".boutonsFiltre");
 
   // SI token trouvé (Mode édition) ALORS
   if (token !== null) {
@@ -262,6 +274,10 @@ export function editionMode() {
 
     // Afficher la barre noire EDITION
     barEditionMode.style.display = "flex";
+
+    // Cacher la barre des filtres
+    barBoutonsFiltres.style.display = "none";
+
   }
 
   // SINON si token non trouvé (Mode standard)
@@ -271,6 +287,13 @@ export function editionMode() {
 
     // Cacher la barre noire EDITION
     barEditionMode.style.display = "none";
+
+    // Afficher la barre des filtres
+    barBoutonsFiltres.style.display = "flex";
+
+    // Réappliquer le filtre qui était activé en mode standard
+    const filterCategoryId = Number(window.localStorage.getItem("filterCategoryId"));
+    applyFilter(filterCategoryId);
 
   }
 
@@ -410,29 +433,28 @@ export async function deleteWork(id, token) {
  */
 function loginLogoutManagement() {
 
-  //
+  // Sélection du bouton login / logout
   const loginLogoutElement = document.querySelector("#loginLogout");
 
-  //
+  // Récupération du token dans le localStorage
   const token = window.localStorage.getItem("token");
 
-  // SI pas de token ( actuellement pas logué ) ALORS
+  // SI pas de token ( mode standard ) ALORS
   if (!token) {
-    //
+    // Charge le formulaire de connexion
     window.location.href = "login.html";
   }
 
-  // SINON (si présence token = actuellement logué)
-  else
-   {
-    //
+  // SINON (si présence token = mode administrateur)
+  else {
+    // Suppression du token dans le localStorage
     window.localStorage.removeItem("token");
 
-    //
+    // Mise à jour du mode édition / mode standard
     editionMode();
   }
 
-  // Gère le bouton login / logout
+  // Gère l'étatdu  bouton login / logout
   statusLoginLogout();
 
 }
@@ -443,18 +465,21 @@ function loginLogoutManagement() {
  */
 export function statusLoginLogout() {
 
-  //
+  // Sélection du bouton "Login/logout"
   const loginLogoutElement = document.querySelector("#loginLogout");
-  //
+
+  // Récupération du token dans le localStorage
   const token = window.localStorage.getItem("token");
 
-  // SI pas de token ALORS
+  // SI pas de token (= mode standard) ALORS
   if (!token) {
-    //
+    // Afficher le bouton "Login"
     loginLogoutElement.innerText = 'login';
   }
 
+  // SINON (si présence token = mode admin)
   else {
+    // Afficher le bouton "Logout"
     loginLogoutElement.innerText = 'logout';
   }
 

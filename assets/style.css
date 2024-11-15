@@ -152,6 +152,7 @@ header {
 
 header a {
 	text-decoration: none;
+	color: black;
 }
 
 section {
@@ -194,12 +195,20 @@ nav li {
 }
 
 li:hover {
-	color: #B1663C;
+	color: black;
+	font-weight: 700;
 }
 
 li a:hover {
-	color: #B1663C;
+	color: black;
+	font-weight: 700;
 }
+
+/* li a:focus {
+	color: red;
+	font-weight: 700;
+} */
+
 
 #introduction {
 	display: flex;
@@ -243,9 +252,11 @@ li a:hover {
 }
 
 .gallery img {
-	width: 305px;  /* largeur fixe */
-    height: 407px; /* hauteur fixe */
-    object-fit: cover; 
+	width: 305px;
+	/* largeur fixe */
+	height: 407px;
+	/* hauteur fixe */
+	object-fit: cover;
 }
 
 #contact {
@@ -294,6 +305,10 @@ input[type="submit"] {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
+}
+
+input[type="submit"]:hover {
+	background-color: #0E2F28;
 }
 
 footer nav ul {
@@ -443,6 +458,7 @@ footer {
 	font-size: 26px;
 	font-weight: bold;
 	cursor: pointer;
+	display: none;
 }
 
 .modal-content h2 {
@@ -459,7 +475,7 @@ footer {
 }
 
 
-.modal-content #photosGalleryModal{
+.modal-content #photosGalleryModal {
 	padding: 0 70px 0 70px;
 }
 
@@ -478,9 +494,11 @@ footer {
 }
 
 #photosGallery img {
-	width: 77px;  /* largeur fixe */
-    height: 103px; /* hauteur fixe */
-    object-fit: cover; 
+	width: 77px;
+	/* largeur fixe */
+	height: 103px;
+	/* hauteur fixe */
+	object-fit: cover;
 }
 
 #photosGallery .delete-button {
@@ -605,7 +623,8 @@ footer {
 
 /* Effet au survol */
 #addPhotoModal #divAddPhoto label:hover {
-	background-color: #bbb;     /* Légèrement plus foncé au survol */
+	background-color: #bbb;
+	/* Légèrement plus foncé au survol */
 }
 
 #addPhotoModal .iconImg {
@@ -613,7 +632,7 @@ footer {
 	color: #B9C5CC;
 }
 
-#imageFile{
+#imageFile {
 	display: none;
 }
 
@@ -641,6 +660,7 @@ footer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 80px;
 }
 
 #editionMode {

@@ -25,7 +25,6 @@ export function addCardWorkModal(work) {
     imageElement.alt = work.title;
     figureElement.appendChild(imageElement);
 
-
     // Bouton de suppression
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
@@ -34,35 +33,36 @@ export function addCardWorkModal(work) {
 
     // Action au clic du bouton suppression
     deleteButton.addEventListener('click', () => {
-
-        //
-        const id = Number(figureElement.getAttribute('id'));
-
-        // Récupération du token
-        const token = window.localStorage.getItem("token");
-
-        //
-        const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet élément ?");
-
-        //
-        if (confirmation) {
-            //
-            deleteWork(id, token);
-            // L'utilisateur a confirmé, on exécute l'action
-            console.log("L'élément a été supprimé.");
-        } else {
-            // L'utilisateur a annulé
-            alert("Suppression annulée.");
-        }
-
-
-
+        // Lancer la suppression d'un travail de l'architecte
+        deleteWorkModal(work.id)
     });
-
 
     // Insérer l'élément figure dans la section "gallery"
     photosGallery.appendChild(figureElement);
 
+}
+
+/**
+ *  Suppression d'un travail avec demande confirmation + réponse suppression auprès de l'utilisateur
+ * @param {Number} id - Identifiant du work à supprimer
+ */
+function deleteWorkModal(id) {
+    // Récupération du token
+    const token = window.localStorage.getItem("token");
+
+    //
+    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet élément ?");
+
+    //
+    if (confirmation) {
+        //
+        deleteWork(id, token);
+        // L'utilisateur a confirmé, on exécute l'action
+        console.log("L'élément a été supprimé.");
+    } else {
+        // L'utilisateur a annulé
+        alert("Suppression annulée.");
+    }
 }
 
 
@@ -106,12 +106,22 @@ function initModal() {
     const previousbtn = document.querySelector(".previous-btn");
     const submitAddPhotoModal = document.querySelector("#submitAddPhotoModal");
 
-    //
-    previousbtn.onclick = function () {
+    // Ouvrir la modale lors du clic sur le bouton de modification
+    changeButton.addEventListener("click", () => {
         //
-        photosGalleryModal.style.display = "block";
+        modal.style.display = "block";
+    })
+
+    // SI clic sur le bouton précédent du modale ALORS
+    previousbtn.onclick = function () {
 
         //
+        previousbtn.style.display = "none";
+
+        // Afficher la modale avec la liste des photos des projets
+        photosGalleryModal.style.display = "block";
+
+        // Cacher la modale avec le formulaire d'ajout de projet
         addPhotoModal.style.display = "none";
     }
 
@@ -120,14 +130,11 @@ function initModal() {
         modal.style.display = "none";
     }
 
-    // Ouvrir la modale lors du clic sur le bouton de modification
-    changeButton.addEventListener("click", () => {
-        //
-        modal.style.display = "block";
-    })
-
     // Ouvrir la modale "Ajout photo" lors du clic sur le bouton "Ajouter photo"
     photoAddButton.addEventListener("click", () => {
+
+        //
+        previousbtn.style.display = "block";
 
         //
         photosGalleryModal.style.display = "none";
@@ -147,7 +154,7 @@ function initModal() {
     // Validation du formulaire lors du clic sur le bouton "Ajout photo"
     submitAddPhotoModal.addEventListener("click", async (e) => {
 
-        //
+        // Désactiver l'évènement du bouton submit par défaut
         e.preventDefault();
 
         // Validation du formulaire
@@ -161,28 +168,26 @@ function initModal() {
 
     })
 
-    //
+    // Lancer la validation du formulaire si changement saisie titre
     document.getElementById("title").addEventListener("change", function () {
         console.log("Contenu du champ title : " + this.value);
         validateAddPhotoForm();
     });
 
-    //
+    // Lancer la validation du formulaire si changement saisie catégorie
     document.getElementById("optCategory").addEventListener("change", function () {
         console.log("Contenu du champ optCategory : " + this.value);
         validateAddPhotoForm();
     });
 
-    //
+    // Lancer la validation du formulaire si sélection d'un fichier image
     document.getElementById("imageFile").addEventListener("change", function () {
 
-        //
-        // console.log("Contenu du champ imageFile : " + this.value);
+        // Lancer la validation du formulaire du modale "Ajout photo"
         validateAddPhotoForm();
 
         //
-        // alert("ok");
-        previewFile();
+        // previewFile();
     });
 
 }
@@ -190,6 +195,7 @@ function initModal() {
 
 /**
  * Effectue une validation du formulaire "Ajout photo" du modale
+ * @returns - true si formulaire validé sinon false
  */
 function validateAddPhotoForm() {
 
@@ -200,16 +206,16 @@ function validateAddPhotoForm() {
     const formData = new FormData(form);
 
     // Vérifier le champ fichier image
-    let errorImageFile = validateImageFile(formData);
+    let validationStatusImageFile = validateImageFile(formData);
 
     // Vérifier le titre
-    let errorTitle = validateTitle(formData);
+    let validationStatusTitle = validateTitle(formData);
 
     // Vérifier la catégorie
-    let errorCategorie = validateCategorie(formData);
+    let validationStatusCategorie = validateCategorie(formData);
 
     // SI aucune erreur trouvé dans le formulaire ALORS
-    if (errorImageFile === false && errorTitle === false && errorCategorie === false) {
+    if (validationStatusImageFile === true && validationStatusTitle === true && validationStatusCategorie === true) {
 
         //
         console.log("Formulaire valide");
@@ -217,12 +223,19 @@ function validateAddPhotoForm() {
         // Activer le bouton "VALIDER"
         document.getElementById("submitAddPhotoModal").disabled = false;
 
+        // Formulaire validé
+        return true;
+
     }
 
     // SINON (si erreur(s) trouvée(s))
     else {
+
         // Désactiver le bouton "VALIDER"
         document.getElementById("submitAddPhotoModal").disabled = true;
+
+        // Formulaire non validé
+        return false;
 
     }
 }
@@ -232,7 +245,7 @@ function validateAddPhotoForm() {
  * Vérifie si le champ "title" est défini dans formData.
  * 
  * @param {FormData} formData - Les données du formulaire contenant le champ "title".
- * @returns {boolean} - true si le champ "title" est vide, sinon false.
+ * @returns {boolean} - true si le champ "title" est valide, sinon false.
  */
 function validateTitle(formData) {
 
@@ -242,18 +255,18 @@ function validateTitle(formData) {
     // Vérifie si le champ est vide
     if (!title) {
         // alert("Titre non défini"); // Alerte si le champ est vide
-        return true;               // Retourne true pour indiquer une erreur
+        return false;               // Retourne false (= non valide)
     }
 
-    // Retourne false si aucune erreur n'est détectée
-    return false;
+    // Retourne true (= valide) car aucune erreur trouvée
+    return true;
 }
 
 
 /**
  *  Vérifie si le champ "catégorie" est défini
  * @param {FormData} formData 
- * @returns {boolean} - true si le champ "categorie" est vide, sinon false.
+ * @returns {boolean} - true si le champ "categorie" est valide, sinon false.
  */
 function validateCategorie(formData) {
 
@@ -263,23 +276,20 @@ function validateCategorie(formData) {
     // Vérifie si le champ est vide
     if (!categoryId) {
         // alert("Catégorie non défini"); // Alerte si le champ est vide
-        return true;               // Retourne true pour indiquer une erreur
+        return false;               // Retourne false (= non valide)
     }
 
-    // Retourne false si aucune erreur n'est détectée
-    return false;
+    // Retourne true (= validation Ok) si aucune erreur n'est détectée
+    return true;
 }
 
 
 /**
  * Fonction pour vérifier la validité d'un fichier image soumis via un formulaire.
  * @param {FormData} formData - Objet FormData contenant les données du formulaire.
- * @returns {boolean} - Retourne true si le fichier est invalide, false sinon.
+ * @returns {boolean} - Retourne true si le fichier est valide, sinon false.
  */
 function validateImageFile(formData) {
-
-    // Pas d'erreur par défaut
-    let errorImageFile = false;
 
     // Récupération des données du champ fichier image
     const imageUrl = formData.get("image");
@@ -287,14 +297,15 @@ function validateImageFile(formData) {
     // Vérifier si le fichier est présent
     if (!imageUrl || imageUrl.name.trim() === "") {
         // alert("Fichier image non défini");
-        return true;  // Retourner immédiatement pour éviter d'autres vérifications inutiles
+        return false;  // Renvoyer false = Fichier image non validé
     }
 
     // Vérifier la taille du fichier (maximum 4 Mo)
-    const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
+    const maxSize = 1 * 1024 * 1024; // 4 Mo en octets
+    // const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
     if (imageUrl.size > maxSize) {
         alert("Taille du fichier image incorrecte (doit être < 4 Mo)");
-        return true;  // Retour immédiat en cas d'erreur
+        return false;  // Renvoyer false = Fichier image non validé
     }
 
     // Vérifier l'extension du fichier
@@ -302,11 +313,14 @@ function validateImageFile(formData) {
     const fileExtension = imageUrl.name.split('.').pop().toLowerCase();
     if (!validExtensions.includes(fileExtension)) {
         alert("Extension de fichier image incorrecte (seules les extensions jpg, jpeg, et png sont autorisées)");
-        return true;  // Retour immédiat en cas d'erreur
+        return false;  // Renvoyer false = Fichier image non validé
     }
 
-    // Retourne false si aucune erreur n'a été détectée
-    return errorImageFile;
+    // Le fichier image est valide donc afficher l'aperçu de la photo
+    previewFile();
+
+    // Retourne true = fichier image valide
+    return true;
 }
 
 
@@ -319,7 +333,7 @@ function previewFile() {
     const preview = document.querySelector("#divAddPhoto img");
     const file = document.querySelector("#imageFile").files[0];
 
-    // Créer de l'objet FileReader
+    // Créer l'objet FileReader
     const reader = new FileReader();
 
     // Créer l'évènement permettant l'affichage de l'image seule après sélection du fichier
