@@ -47,20 +47,23 @@ export function addCardWorkModal(work) {
  * @param {Number} id - Identifiant du work à supprimer
  */
 function deleteWorkModal(id) {
+
     // Récupération du token
     const token = window.localStorage.getItem("token");
 
-    //
+    // Demander une confirmation de suppression auprès de l'utilisateur
     const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet élément ?");
 
-    //
+    // SI confirmation ALORS
     if (confirmation) {
-        //
+        // Suppression du travail
         deleteWork(id, token);
         // L'utilisateur a confirmé, on exécute l'action
         console.log("L'élément a été supprimé.");
-    } else {
-        // L'utilisateur a annulé
+    } 
+    // SINON (si annulation)
+    else {
+        // Afficher un message d'annulation
         alert("Suppression annulée.");
     }
 }
@@ -170,13 +173,11 @@ function initModal() {
 
     // Lancer la validation du formulaire si changement saisie titre
     document.getElementById("title").addEventListener("change", function () {
-        console.log("Contenu du champ title : " + this.value);
         validateAddPhotoForm();
     });
 
     // Lancer la validation du formulaire si changement saisie catégorie
     document.getElementById("optCategory").addEventListener("change", function () {
-        console.log("Contenu du champ optCategory : " + this.value);
         validateAddPhotoForm();
     });
 
@@ -185,9 +186,6 @@ function initModal() {
 
         // Lancer la validation du formulaire du modale "Ajout photo"
         validateAddPhotoForm();
-
-        //
-        // previewFile();
     });
 
 }
@@ -372,6 +370,9 @@ function resetForm() {
     document.querySelector("#divAddPhoto label").style.display = "block";
     document.querySelector("#divAddPhoto span").style.display = "block";
     document.querySelector("#divAddPhoto img").style.display = "none";
+
+   // Désactiver le bouton "VALIDER"
+   document.getElementById("submitAddPhotoModal").disabled = true;
 }
 
 
